@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Femto_UI" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/ligth_blue</item>
+    </style>
+
+    <style name="Theme.Femto_UI" parent="Base.Theme.Femto_UI" />
+</resources>
