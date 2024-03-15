@@ -25,15 +25,8 @@ class AndroidLarge3() : Fragment() {
         val view = inflater.inflate(R.layout.fragment_android_large3,container,false)
         btnNext = view.findViewById(R.id.btn_next)
         btnNext.setOnClickListener {
-            val number = "7021557520"
-            val countryCode = "91"
-            val otp = "123456"
-            val sendIntent = Intent(requireContext(), OtpForgetPasswordActivity::class.java)
-            sendIntent.putExtra("phoneNumber",number)
-            sendIntent.putExtra("countryCode",countryCode)
-            sendIntent.putExtra("otp",otp)
-            startActivity(sendIntent)
-//            startActivity(Intent(requireContext(), Otp_Verification::class.java))
+
+            startActivity(Intent(requireContext(), AuthMainActivity::class.java))
         }
         return view
     }

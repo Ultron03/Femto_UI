@@ -59,7 +59,7 @@ class Otp_Verification : AppCompatActivity() {
         }
         clickedResendOtp()
         clickedBack()
-
+        userConsent()
     }
 
     private fun userConsent() {
