@@ -24,9 +24,6 @@
             android:name=".HomePageActivity"
             android:exported="false" />
         <activity
-            android:name=".authentication.ResetPasswordActivity"
-            android:exported="false" />
-        <activity
             android:name=".authentication.LoginActivity"
             android:exported="false"
             android:label="@string/title_activity_login"

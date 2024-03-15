@@ -22,8 +22,6 @@ import com.google.android.material.tabs.TabLayout
 
 
 
-
-
 class MainActivity : AppCompatActivity()  {
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter: adapter

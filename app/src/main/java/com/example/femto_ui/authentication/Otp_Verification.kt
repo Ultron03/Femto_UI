@@ -1,6 +1,8 @@
 package com.example.femto_ui.authentication
 
+import android.app.Activity
 import android.content.Intent
+import android.content.IntentFilter
 import android.icu.number.IntegerWidth
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +16,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.femto_ui.R
+import com.google.android.gms.auth.api.phone.SmsRetriever
+import java.util.regex.Pattern
 import kotlin.random.Random
 
 class Otp_Verification : AppCompatActivity() {
@@ -37,6 +41,9 @@ class Otp_Verification : AppCompatActivity() {
     private lateinit var authviewModel: AuthViewModel
     private lateinit var authViewModelFactory: AuthViewModelFactory
 
+    private val REQUEST_CODE = 101
+    private var otpBrodcastReceiver:OtpBroadcastReceiver? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_otp_verification)
@@ -47,10 +54,70 @@ class Otp_Verification : AppCompatActivity() {
         init()
         txtShowNumber.text = ("We have sent an OTP on your number +${countryCode}-"+number)
         addTextChangeListener()
-        clickedContiue()
+        btnContinue.setOnClickListener{
+            clickedContiue()
+        }
         clickedResendOtp()
         clickedBack()
 
+    }
+
+    private fun userConsent() {
+        val client = SmsRetriever.getClient(this)
+        client.startSmsUserConsent(null)
+    }
+
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode== REQUEST_CODE && resultCode == Activity.RESULT_OK && data!=null){
+            Toast.makeText(this,"Hellow there",Toast.LENGTH_SHORT).show()
+            val message = data.getStringExtra(SmsRetriever.EXTRA_SMS_MESSAGE)
+            getOtpFromMessage(message)
+        }
+    }
+
+    private fun getOtpFromMessage(message: String?) {
+        val patternOtp = Pattern.compile("(|^)\\d{5}")
+        val matcher = patternOtp.matcher(message)
+        if(matcher.find()){
+            val smsOtp= matcher.group(0)
+            inputOTP1.setText(smsOtp?.get(0).toString())
+            inputOTP2.setText(smsOtp?.get(1).toString())
+            inputOTP3.setText(smsOtp?.get(2).toString())
+            inputOTP4.setText(smsOtp?.get(3).toString())
+            inputOTP5.setText(smsOtp?.get(4).toString())
+            clickedContiue()
+
+        }
+
+    }
+
+    private fun registerBroadcastReceiver(){
+        otpBrodcastReceiver = OtpBroadcastReceiver()
+        otpBrodcastReceiver!!.otpBrodcastReceiverListener = object : OtpBroadcastReceiver.OtpBrodcastReceiverListener {
+            override fun onSuccess(intent: Intent) {
+                startActivityForResult(intent,REQUEST_CODE)
+            }
+
+            override fun onFailure() {
+                TODO("Not yet implemented")
+            }
+
+        }
+        val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
+        registerReceiver(otpBrodcastReceiver,intentFilter, SmsRetriever.SEND_PERMISSION,null)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        registerBroadcastReceiver()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(otpBrodcastReceiver)
     }
 
     private fun clickedBack() {
@@ -77,23 +144,22 @@ class Otp_Verification : AppCompatActivity() {
     }
 
     private fun clickedContiue() {
-        btnContinue.setOnClickListener {
 
-            val entered_otp = (inputOTP1.text.toString()+inputOTP2.text.toString()+inputOTP3.text.toString()+inputOTP4.text.toString()+inputOTP5.text.toString())
+        val entered_otp = (inputOTP1.text.toString()+inputOTP2.text.toString()+inputOTP3.text.toString()+inputOTP4.text.toString()+inputOTP5.text.toString())
 
-            if(otp==entered_otp){
-                Toast.makeText(this,"Verified Successfully",Toast.LENGTH_SHORT).show()
+        if(otp==entered_otp){
+            Toast.makeText(this,"Verified Successfully",Toast.LENGTH_SHORT).show()
 
-                val intent = Intent(this,RegisterActivity::class.java)
-                intent.putExtra("phoneNumber",number)
-                intent.putExtra("countryCode",countryCode)
-                intent.putExtra("otp",otp)
-                startActivity(intent)
-            }
-            else{
-                Toast.makeText(this,"Enter Correct OTP",Toast.LENGTH_SHORT).show()
-            }
+            val intent = Intent(this,RegisterActivity::class.java)
+            intent.putExtra("phoneNumber",number)
+            intent.putExtra("countryCode",countryCode)
+            intent.putExtra("otp",otp)
+            startActivity(intent)
         }
+        else{
+            Toast.makeText(this,"Enter Correct OTP",Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun addTextChangeListener() {

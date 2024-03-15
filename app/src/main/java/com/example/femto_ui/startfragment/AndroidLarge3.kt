@@ -10,6 +10,8 @@ import android.widget.Button
 import com.example.femto_ui.authentication.AuthMainActivity
 import com.example.femto_ui.R
 import com.example.femto_ui.authentication.LoginActivity
+import com.example.femto_ui.authentication.OtpForgetPasswordActivity
+import com.example.femto_ui.authentication.Otp_Verification
 import com.example.femto_ui.authentication.RegisterActivity
 
 
@@ -23,7 +25,15 @@ class AndroidLarge3() : Fragment() {
         val view = inflater.inflate(R.layout.fragment_android_large3,container,false)
         btnNext = view.findViewById(R.id.btn_next)
         btnNext.setOnClickListener {
-            startActivity(Intent(requireContext(), AuthMainActivity::class.java))
+            val number = "7021557520"
+            val countryCode = "91"
+            val otp = "123456"
+            val sendIntent = Intent(requireContext(), OtpForgetPasswordActivity::class.java)
+            sendIntent.putExtra("phoneNumber",number)
+            sendIntent.putExtra("countryCode",countryCode)
+            sendIntent.putExtra("otp",otp)
+            startActivity(sendIntent)
+//            startActivity(Intent(requireContext(), Otp_Verification::class.java))
         }
         return view
     }
