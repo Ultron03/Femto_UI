@@ -11,7 +11,7 @@
         android:id="@+id/back_to_otp_verify"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/ic_backspace_white"
+        style="@style/BackArraowButton1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="20dp"
@@ -23,6 +23,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        style="@style/CardBackGround"
         app:cardCornerRadius="20dp">
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,13 +34,13 @@
             <ImageView
                 android:layout_width="10dp"
                 android:layout_height="10dp"
-                android:src="@drawable/aim_design"
+                style="@style/AimDesign"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="30dp"/>
             <ImageView
                 android:layout_width="21dp"
                 android:layout_height="21dp"
-                android:src="@drawable/star_design"
+                style="@style/StarDesign"
                 android:layout_marginStart="30dp"
                 />
             <TextView
@@ -49,6 +50,7 @@
                 android:layout_marginTop="15dp"
                 android:text="Set Your Password"
                 android:textStyle="bold"
+                style="@style/TextColor"
                 android:textSize="28sp"
                 android:textAlignment="center"/>
 
@@ -66,8 +68,9 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:hint="Enter the Password"
+
                     android:id="@+id/edt_pass"
-                    android:background="@drawable/bg_bottom_line"/>
+                   style="@style/BottomLine"/>
 
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
@@ -85,7 +88,7 @@
                     android:layout_gravity="center"
                     android:hint="Enter the Password"
                     android:id="@+id/edt_confirm_pass"
-                    android:background="@drawable/bg_bottom_line"/>
+                    style="@style/BottomLine"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -211,6 +214,7 @@
                     android:layout_gravity="center"
                     android:text="Sign up"
                     android:textSize="16sp"
+                    style="@style/TextColor"
                     />
 
 
